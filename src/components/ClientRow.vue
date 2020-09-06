@@ -1,9 +1,9 @@
 <template>
     <div
-        :to="`/clients/${client.uuid}/projects`"
         :class="[odd ? 'bg-gray-100 hover:bg-gray-200' : 'bg-gray-300 hover:bg-gray-400']"
         class="flex justify-between select-none transition duration-100 cursor-pointer"
         @click.right.prevent="openContextMenu"
+        @dblclick="goToProjects(client)"
     >
         <div class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
             <span v-if="state == 'default'">{{ client.name }}</span>
@@ -67,6 +67,10 @@ export default {
         save (event) {
             this.$emit('client:updated', event.target.value);
             this.state = 'default';
+        },
+
+        goToProjects (client) {
+            this.$router.push(`/clients/${client.uuid}/projects`);
         }
     },
 

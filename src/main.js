@@ -22,8 +22,8 @@ Vue.use(VueRouter)
 Vue.config.productionTip = false
 
 const routes = [
-    { path: '/', component: Home },
-    { path: '/clients/:uuid/projects', component: Projects },
+    { name: 'home', path: '/', component: Home },
+    { name: 'client.projects', path: '/clients/:uuid/projects', component: Projects },
 ]
 
 const router = new VueRouter({
