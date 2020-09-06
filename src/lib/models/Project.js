@@ -5,8 +5,15 @@ class Project {
         return await DatabaseManager.select('*').from('projects');
     }
 
+    async find (uuid) {
+        console.log('finding uuid', uuid);
+        return DatabaseManager.select('*').from('projects').where('uuid', uuid).first();
+    }
+
     async create (fields) {
-        return await DatabaseManager.insert('projects', fields);
+        let projectUuid = await DatabaseManager.insert('projects', fields);
+
+        return this.find(projectUuid);
     }
 }
 

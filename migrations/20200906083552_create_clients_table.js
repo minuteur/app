@@ -2,7 +2,7 @@
 exports.up = function(knex) {
     return knex.schema
         .createTable('clients', function (table) {
-            table.string('uuid');
+            table.string('uuid').primary();
             table.string('name', 255).notNullable();
         })
 };

@@ -5,8 +5,20 @@ class Client {
         return await DatabaseManager.select('*').from('clients');
     }
 
-    async create (name) {
-        return await DatabaseManager.insert('clients', { name });
+    async find (uuid) {
+        return DatabaseManager.select('*').from('clients').where('uuid', uuid).first();
+    }
+
+    async create (fields) {
+        let clientUuid = await DatabaseManager.insert('clients', fields);
+
+        return this.find(clientUuid);
+    }
+
+    async update (uuid, fields) {
+        await DatabaseManager.getInstance('clients')
+            .where('uuid', uuid)
+            .update(fields);
     }
 }
 

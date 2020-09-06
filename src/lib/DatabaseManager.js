@@ -12,10 +12,16 @@ class DatabaseManager {
         return this.knexManager.select(fields);
     }
 
-    insert (table, fields) {
+    async insert (table, fields) {
         fields['uuid'] = uuidv4();
 
-        return this.knexManager(table).insert(fields);
+        await this.knexManager(table).insert(fields);
+
+        return fields['uuid'];
+    }
+
+    getInstance (parameters) {
+        return this.knexManager(parameters);
     }
 }
 
