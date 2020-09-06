@@ -1,24 +1,12 @@
 <template>
-    <div class="h-full w-full flex flex-col">
-        <Licensing v-if="! hasValidLicense" />
-        <HelloWorld msg="Welcome to Your Electron App"/>
-    </div>
+    <transition name="fade">
+        <router-view></router-view>
+    </transition>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Licensing from './components/Licensing';
-import licenseCheck from './mixins/licensing';
-
 export default {
-  name: 'App',
-  mixins: [
-    licenseCheck
-  ],
-  components: {
-    HelloWorld,
-    Licensing,
-  },
+    name: 'App'
 }
 </script>
 
@@ -33,8 +21,12 @@ html, body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
 }
 </style>

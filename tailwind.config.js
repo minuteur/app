@@ -1,10 +1,15 @@
 module.exports = {
-  purge: [
-    './src/**/*.vue',
-  ],
-  theme: {
-    extend: {},
-  },
-  variants: {},
-  plugins: [],
+    purge: [
+        './src/**/*.vue',
+    ],
+    theme: {
+        extend: {
+            height: {
+                'screen-15vh': '15vh',
+                'screen-85vh': '85vh',
+            }
+        },
+    },
+    variants: {},
+    plugins: [],
 }

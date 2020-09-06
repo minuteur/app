@@ -28,8 +28,13 @@
     "core-js": "^3.6.5",
     "electron-store": "^6.0.0",
     "electron-updater": "^4.3.4",
+    "knex": "^0.21.5",
     "menubar": "^9.0.1",
-    "vue": "^2.6.11"
+    "mssql": "^6.2.1",
+    "sqlite3": "^5.0.0",
+    "uuid": "^8.3.0",
+    "vue": "^2.6.11",
+    "vue-router": "^3.4.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
