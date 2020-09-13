@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
-import Home from './components/pages/Home'
-import Projects from './components/pages/Projects'
+import Home from '@pages/Home'
+import Projects from '@pages/Projects'
+import Sessions from '@pages/Sessions'
 import DatabaseManager from './lib/DatabaseManager'
 
 const Storage = require('electron-store');
@@ -24,6 +25,7 @@ Vue.config.productionTip = false
 const routes = [
     { name: 'home', path: '/', component: Home },
     { name: 'client.projects', path: '/clients/:uuid/projects', component: Projects },
+    { name: 'client.projects.sessions', path: '/clients/:uuid/projects/:projectUuid/sessions', component: Sessions },
 ]
 
 const router = new VueRouter({

@@ -1,7 +1,7 @@
 <template>
-    <Layout title="Projects">
+    <Layout title="Sessions">
         <template #header-left>
-            <router-link to="/" class="text-white">
+            <router-link :to="projectUrl" class="text-white">
                 <svg class="inline" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -11,13 +11,13 @@
         <template #default>
             <div class="flex flex-col h-screen-85vh">
                 <div class="flex-grow">
-                    <ul v-if="projects.length > 0">
-                        <li v-for="(project, index) in projects" :key="project.uuid">
-                            <ProjectRow
-                                :project="project"
+                    <ul v-if="sessions.length > 0">
+                        <li v-for="(session, index) in sessions" :key="session.uuid">
+                            <SessionRow
+                                :session="session"
                                 :odd="index % 2 === 0"
-                                @project:updated="(name) => onProjectUpdated(index, name)"
-                            ></ProjectRow>
+                                @session:updated="(name) => onSessionUpdated(index, name)"
+                            ></SessionRow>
                         </li>
                     </ul>
 
@@ -29,7 +29,7 @@
                 </div>
 
                 <footer class="flex justify-between px-6 py-2 bg-gray-800 text-white">
-                    <button type="button" @click="create" title="Add new project">+</button>
+                    <button type="button" @click="create" title="Add new session">+</button>
                 </footer>
             </div>
         </template>
@@ -37,52 +37,56 @@
 </template>
 
 <script>
+import Session from '@models/Session'
 import Layout from '@components/Layout';
-import ProjectRow from '@components/ProjectRow'
-import Project from '@models/Project'
+import SessionRow from '@components/SessionRow';
 
 export default {
-    name: 'Projects',
+    name: 'Sessions',
 
     components: {
         Layout,
-        ProjectRow
+        SessionRow,
     },
 
     async mounted () {
-        await this.fetchProjects();
+        await this.fetchSessions();
     },
 
     data () {
         return {
-            projects: []
+            sessions: []
         };
     },
 
     methods: {
         async create () {
-            let project = await Project.create({
-                client_uuid: this.$route.params.uuid,
-                name: 'New project'
+            let session = await Session.create({
+                project_uuid: this.$route.params.projectUuid,
+                name: 'Session'
             });
 
-            console.log(project);
-
-            this.projects.push(project);
+            this.sessions.push(session);
         },
 
-        async fetchProjects () {
-            this.projects = await Project.all(this.$route.params.uuid);
+        async fetchSessions () {
+            this.sessions = await Session.all(this.$route.params.projectUuid);
         },
 
-        async onProjectUpdated (index, name) {
-            this.projects[index].name = name;
+        async onSessionUpdated (index, name) {
+            this.sessions[index].name = name;
 
-            Project.update(
-                this.projects[index].uuid,
+            Session.update(
+                this.sessions[index].uuid,
                 { name: name }
             );
         },
+    },
+
+    computed: {
+        projectUrl () {
+            return `/clients/${this.$route.params.uuid}/projects`;
+        }
     }
 }
 </script>

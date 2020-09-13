@@ -1,7 +1,15 @@
 <template>
     <div class="flex flex-col min-h-screen w-full">
-        <div class="flex justify-center h-screen-15vh px-6 py-4 bg-gray-800 text-white">
+        <div class="flex justify-between h-screen-15vh px-6 py-4 bg-gray-800 text-white">
+            <slot name="header-left">
+                <div></div>
+            </slot>
+
             <h3 class="text-center text-lg">{{ title }}</h3>
+
+            <slot name="header-right">
+                <div></div>
+            </slot>
         </div>
 
         <div class="flex-grow">

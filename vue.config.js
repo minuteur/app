@@ -1,7 +1,18 @@
+const path = require('path');
+
 module.exports = {
     configureWebpack: {
-        devtool: 'source-map'
+        devtool: 'source-map',
+
+        resolve: {
+            alias: {
+                '@models': path.resolve(__dirname, 'src', 'lib/models'),
+                '@components': path.resolve(__dirname, 'src', 'components'),
+                '@pages': path.resolve(__dirname, 'src', 'components/pages'),
+            }
+        }
     },
+
     pluginOptions: {
         electronBuilder: {
             nodeIntegration: true,
