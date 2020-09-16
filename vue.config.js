@@ -6,6 +6,7 @@ module.exports = {
 
         resolve: {
             alias: {
+                '@lib': path.resolve(__dirname, 'src', 'lib'),
                 '@models': path.resolve(__dirname, 'src', 'lib/models'),
                 '@components': path.resolve(__dirname, 'src', 'components'),
                 '@pages': path.resolve(__dirname, 'src', 'components/pages'),

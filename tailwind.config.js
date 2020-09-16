@@ -1,7 +1,6 @@
 module.exports = {
-    purge: [
-        './src/**/*.vue',
-    ],
+    purge: false,
+
     theme: {
         extend: {
             height: {

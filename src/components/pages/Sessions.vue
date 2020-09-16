@@ -17,6 +17,8 @@
                                 :session="session"
                                 :odd="index % 2 === 0"
                                 @session:updated="(name) => onSessionUpdated(index, name)"
+                                @section:time-updated="(time) => session.time = time"
+                                @session:stopped="(name) => onSessionStopped(index, name)"
                             ></SessionRow>
                         </li>
                     </ul>
@@ -38,6 +40,7 @@
 
 <script>
 import Session from '@models/Session'
+import { SESSION_STATUS_DONE } from '@models/Session'
 import Layout from '@components/Layout';
 import SessionRow from '@components/SessionRow';
 
@@ -79,6 +82,15 @@ export default {
             Session.update(
                 this.sessions[index].uuid,
                 { name: name }
+            );
+        },
+
+        async onSessionStopped (index) {
+            this.sessions[index].state = SESSION_STATUS_DONE;
+
+            Session.stopTimer(
+                this.sessions[index].uuid,
+                this.sessions[index].time
             );
         },
     },

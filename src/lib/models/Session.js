@@ -1,6 +1,9 @@
 import moment from 'moment';
 import DatabaseManager from './../DatabaseManager';
 
+const SESSION_STATUS_RUNNING = 'running';
+const SESSION_STATUS_DONE = 'done';
+
 class Session {
     async all (projectUuid) {
         return await DatabaseManager
@@ -18,7 +21,8 @@ class Session {
             ...fields,
             ...{
                 date: moment().format('YYYY-MM-DD'),
-                started_at: moment().format('YYYY-MM-DD HH:mm:ss'),
+                state: SESSION_STATUS_RUNNING,
+                time: 1
             }
         });
 
@@ -30,6 +34,16 @@ class Session {
             .where('uuid', uuid)
             .update(fields);
     }
+
+    async stopTimer (uuid, time) {
+        await DatabaseManager.getInstance('sessions')
+            .where('uuid', uuid)
+            .update({
+                time: time,
+                state: SESSION_STATUS_DONE
+            });
+    }
 }
 
-export default new Session
+export default new Session;
+export { SESSION_STATUS_DONE };
