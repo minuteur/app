@@ -18,7 +18,7 @@
                                 :odd="index % 2 === 0"
                                 @session:updated="(name) => onSessionUpdated(index, name)"
                                 @section:time-updated="(time) => session.time = time"
-                                @session:stopped="(name) => onSessionStopped(index, name)"
+                                @session:stopped="(totalTime) => onSessionStopped(index, totalTime)"
                             ></SessionRow>
                         </li>
                     </ul>
@@ -40,7 +40,7 @@
 
 <script>
 import Session from '@models/Session'
-import { SESSION_STATUS_DONE } from '@models/Session'
+import { SESSION_STATUS_DONE, SESSION_STATUS_RUNNING } from '@models/Session'
 import Layout from '@components/Layout';
 import SessionRow from '@components/SessionRow';
 
@@ -54,6 +54,10 @@ export default {
 
     async mounted () {
         await this.fetchSessions();
+
+        if (this.$route.params.start === true && ! this.hasRunningSession) {
+            this.create();
+        }
     },
 
     data () {
@@ -85,12 +89,13 @@ export default {
             );
         },
 
-        async onSessionStopped (index) {
+        async onSessionStopped (index, totalTime) {
             this.sessions[index].state = SESSION_STATUS_DONE;
+            this.sessions[index].time = totalTime;
 
             Session.stopTimer(
                 this.sessions[index].uuid,
-                this.sessions[index].time
+                totalTime
             );
         },
     },
@@ -98,6 +103,12 @@ export default {
     computed: {
         projectUrl () {
             return `/clients/${this.$route.params.uuid}/projects`;
+        },
+
+        hasRunningSession () {
+            return this.sessions.filter((session) => {
+                return session.state === SESSION_STATUS_RUNNING;
+            }).length > 0;
         }
     }
 }

@@ -3,7 +3,7 @@
         :class="[odd ? 'bg-gray-100 hover:bg-gray-300' : 'bg-gray-300 hover:bg-gray-500']"
         class="flex justify-between select-none transition duration-100 cursor-pointer"
         @click.right.prevent="openContextMenu"
-        @dblclick="goToProjects(client)"
+        @dblclick="goToProjects"
     >
         <div class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
             <span v-if="state == 'default'">{{ client.name }}</span>
@@ -69,9 +69,9 @@ export default {
             this.state = 'default';
         },
 
-        goToProjects (client) {
-            this.$router.push(`/clients/${client.uuid}/projects`);
-        }
+        goToProjects () {
+            this.$router.push(`/clients/${this.client.uuid}/projects`);
+        },
     },
 
     computed: {

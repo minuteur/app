@@ -6,7 +6,6 @@ class TimeManager {
      * @param string date
      */
     toSeconds (date) {
-        console.log(moment().diff(moment(date).diff('seconds')))
         return moment().diff(moment(date), 'seconds');
     }
 

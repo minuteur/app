@@ -1,8 +1,9 @@
 <template>
     <div
         :class="[odd ? 'bg-gray-100 hover:bg-gray-300' : 'bg-gray-300 hover:bg-gray-500']"
-        class="flex justify-between select-none transition duration-100"
+        class="flex justify-between items-center select-none transition duration-100"
         @click.right.prevent="openContextMenu"
+        @dblclick="goToSession"
     >
         <div class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
             <span v-if="state == 'default'">{{ project.name }}</span>
@@ -18,14 +19,15 @@
         </div>
 
         <div class="px-6 py-4 text-right">
-        <div v-if="runningSession">
+            <div v-if="runningSession">
                 <Timer
                     :time="runningSession.time"
                     :started-at="runningSession.started_at"
+                    @stop="onStopTimer"
                 />
             </div>
 
-            <router-link :to="`/clients/${$route.params.uuid}/projects/${project.uuid}/sessions`" v-else>
+            <router-link :to="startNewSessionLink" v-else>
                 <svg class="inline" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" title="Start timer">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
                 </svg>
@@ -85,11 +87,42 @@ export default {
         save (event) {
             this.$emit('project:updated', event.target.value);
             this.state = 'default';
+        },
+
+        onStopTimer (totalTime) {
+            Session.stopTimer(
+                this.runningSession.uuid,
+                totalTime
+            );
+
+            this.goToSession({ edit: this.runningSession.uuid });
+        },
+
+        goToSession (extraParams = {}) {
+            console.log('come on');
+            // this.$router.push(`/clients/${this.$route.params.uuid}/projects/${this.project.uuid}/sessions`);
+            this.$router.push({
+                name: 'client.projects.sessions',
+                params: {
+                    uuid: this.$route.params.uuid,
+                    projectUuid: this.project.uuid,
+                    ...extraParams,
+                }
+            });
         }
     },
 
     computed: {
-
+        startNewSessionLink () {
+            return {
+                name: 'client.projects.sessions',
+                params: {
+                    uuid: this.$route.params.uuid,
+                    projectUuid: this.project.uuid,
+                    start: true
+                }
+            };
+        }
     }
 }
 </script>

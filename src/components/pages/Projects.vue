@@ -66,8 +66,6 @@ export default {
                 name: 'New project'
             });
 
-            console.log(project);
-
             this.projects.push(project);
         },
 

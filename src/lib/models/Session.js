@@ -67,4 +67,4 @@ class Session {
 }
 
 export default new Session;
-export { SESSION_STATUS_DONE };
+export { SESSION_STATUS_DONE, SESSION_STATUS_RUNNING };
