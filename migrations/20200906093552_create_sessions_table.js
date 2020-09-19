@@ -7,10 +7,11 @@ exports.up = function(knex) {
             table.string('name', 255).nullable();
             table.string('state');
             table.date('date').notNullable();
+            table.timestamp('started_at').notNullable();
             table.integer('time').nullable();
         })
 };
 
 exports.down = function(knex) {
-    return knex.schema.dropTable('projects');
+    return knex.schema.dropTable('sessions');
 };

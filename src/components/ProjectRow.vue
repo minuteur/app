@@ -18,7 +18,14 @@
         </div>
 
         <div class="px-6 py-4 text-right">
-            <router-link :to="`/clients/${$route.params.uuid}/projects/${project.uuid}/sessions`">
+        <div v-if="runningSession">
+                <Timer
+                    :time="runningSession.time"
+                    :started-at="runningSession.started_at"
+                />
+            </div>
+
+            <router-link :to="`/clients/${$route.params.uuid}/projects/${project.uuid}/sessions`" v-else>
                 <svg class="inline" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" title="Start timer">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
                 </svg>
@@ -30,6 +37,8 @@
 <script>
 import { remote } from 'electron';
 const { Menu, MenuItem } = remote;
+import Session from '@models/Session'
+import Timer from '@components/Timer';
 
 export default {
     props: {
@@ -37,10 +46,19 @@ export default {
         odd: Boolean
     },
 
+    components: {
+        Timer,
+    },
+
     data () {
         return {
             state: 'default',
+            runningSession: null,
         };
+    },
+
+    async mounted () {
+        this.runningSession = await Session.getRunningSession(this.project.uuid);
     },
 
     methods: {

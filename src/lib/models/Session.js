@@ -21,6 +21,7 @@ class Session {
             ...fields,
             ...{
                 date: moment().format('YYYY-MM-DD'),
+                started_at: moment().format('YYYY-MM-DD HH:mm:ss'),
                 state: SESSION_STATUS_RUNNING,
                 time: 1
             }
@@ -42,6 +43,26 @@ class Session {
                 time: time,
                 state: SESSION_STATUS_DONE
             });
+    }
+
+    /**
+     * Get the running session for a specific project.
+     * @param {string} uuid
+     */
+    getRunningSession (uuid) {
+        console.log('getting running session', {
+            uuid: uuid,
+            state: SESSION_STATUS_RUNNING
+        });
+
+        return DatabaseManager
+            .select('*')
+            .from('sessions')
+            .where({
+                project_uuid: uuid,
+                state: SESSION_STATUS_RUNNING
+            })
+            .first();
     }
 }
 
