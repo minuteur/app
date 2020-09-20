@@ -17,6 +17,7 @@
                                 :session="session"
                                 :odd="index % 2 === 0"
                                 @session:updated="(name) => onSessionUpdated(index, name)"
+                                @session:deleted="() => onSessionDeleted(index)"
                                 @section:time-updated="(time) => session.time = time"
                                 @session:stopped="(totalTime) => onSessionStopped(index, totalTime)"
                             ></SessionRow>
@@ -87,6 +88,12 @@ export default {
                 this.sessions[index].uuid,
                 { name: name }
             );
+        },
+
+        async onSessionDeleted (index) {
+            await Session.delete(this.sessions[index].uuid);
+
+            this.sessions.splice(index, 1);
         },
 
         async onSessionStopped (index, totalTime) {

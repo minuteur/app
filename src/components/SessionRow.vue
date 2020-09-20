@@ -1,13 +1,13 @@
 <template>
     <div
         :class="[odd ? 'bg-gray-100 hover:bg-gray-300' : 'bg-gray-300 hover:bg-gray-500']"
-        class="flex justify-between transition duration-100"
+        class="flex justify-between items-center transition duration-100"
         @click.right.prevent="openContextMenu"
     >
-        <div class="px-6 py-2 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-            <span v-if="state == 'default'">
-                <span class="block mb-1 leading-none"></span>{{ session.name }}
-                <span class="block mt-1 leading-none text-xs text-gray-400">{{ session.date }}</span>
+        <div class="px-6 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900 w-8/12">
+            <span v-if="state == 'default'" @dblclick.stop="edit" class="w-full">
+                <p class="block mb-1 leading-none truncate" :title="session.name">{{ session.name }}</p>
+                <p class="block leading-none text-xs text-gray-400">{{ session.date }}</p>
             </span>
 
             <input
@@ -65,6 +65,10 @@ export default {
                 label: 'Edit',
                 click: () => this.edit(),
             }))
+            menu.append(new MenuItem({
+                label: 'Delete',
+                click: () => this.delete(),
+            }))
 
             menu.popup({ window: remote.getCurrentWindow() });
         },
@@ -77,8 +81,12 @@ export default {
             });
         },
 
+        delete () {
+            this.$emit('session:deleted');
+        },
+
         save (event) {
-            this.$emit('project:updated', event.target.value);
+            this.$emit('session:updated', event.target.value);
             this.state = 'default';
         },
 

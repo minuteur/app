@@ -6,7 +6,7 @@
         @dblclick="goToSession"
     >
         <div class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-            <span v-if="state == 'default'">{{ project.name }}</span>
+            <span v-if="state == 'default'" @dblclick.stop="edit">{{ project.name }}</span>
 
             <input
                 type="text"

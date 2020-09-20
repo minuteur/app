@@ -36,6 +36,12 @@ class Session {
             .update(fields);
     }
 
+    async delete (uuid) {
+        await DatabaseManager.getInstance('sessions')
+            .where('uuid', uuid)
+            .delete();
+    }
+
     async stopTimer (uuid, time) {
         await DatabaseManager.getInstance('sessions')
             .where('uuid', uuid)
