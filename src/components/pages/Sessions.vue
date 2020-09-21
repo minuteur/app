@@ -16,7 +16,7 @@
                             <SessionRow
                                 :session="session"
                                 :odd="index % 2 === 0"
-                                @session:updated="(name) => onSessionUpdated(index, name)"
+                                @session:edit="() => onSessionEdit(index)"
                                 @session:deleted="() => onSessionDeleted(index)"
                                 @section:time-updated="(time) => session.time = time"
                                 @session:stopped="(totalTime) => onSessionStopped(index, totalTime)"
@@ -27,6 +27,38 @@
                     <div v-else class="h-full flex flex-col justify-center self-center">
                         <div class="text-center">
                             <img src="./../../assets/empty.svg" alt="No clients found" class="inline">
+                        </div>
+                    </div>
+
+                    <!-- Session edit overlay -->
+                    <div class="absolute w-full bottom-0 left-0 px-6 py-4 bg-gray-800 shadow border-t-4 border-t-gray-700" v-if="state === 'edit'">
+                        <div class="mb-3">
+                            <label for="name" class="block text-sm font-medium leading-5 text-white">Session name</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <input
+                                    id="name"
+                                    class="form-input form-input-sm block w-full sm:text-sm sm:leading-5"
+                                    placeholder="Session name"
+                                    ref="name"
+                                    v-model="edit.session.name"
+                                    @keydown.enter="update"
+                                >
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="date" class="block text-sm font-medium leading-5 text-white">Date</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <input
+                                    id="date"
+                                    class="form-input form-input-sm block w-full sm:text-sm sm:leading-5"
+                                    placeholder="YYYY-MM-DD"
+                                    type="date"
+                                    ref="date"
+                                    v-model="edit.session.date"
+                                    @keydown.enter="update"
+                                >
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,7 +95,11 @@ export default {
 
     data () {
         return {
-            sessions: []
+            state: 'default',
+            sessions: [],
+            edit: {
+                session: {}
+            },
         };
     },
 
@@ -81,13 +117,25 @@ export default {
             this.sessions = await Session.all(this.$route.params.projectUuid);
         },
 
-        async onSessionUpdated (index, name) {
-            this.sessions[index].name = name;
+        async onSessionEdit (index) {
+            this.edit.session = this.sessions[index];
+            this.state = 'edit';
 
-            Session.update(
-                this.sessions[index].uuid,
-                { name: name }
+            this.$nextTick(() => {
+                this.$refs.name.focus();
+            })
+        },
+
+        async update () {
+            await Session.update(
+                this.edit.session.uuid,
+                {
+                    name: this.edit.session.name,
+                    date: this.edit.session.date
+                }
             );
+
+            this.state = 'default';
         },
 
         async onSessionDeleted (index) {
@@ -100,10 +148,12 @@ export default {
             this.sessions[index].state = SESSION_STATUS_DONE;
             this.sessions[index].time = totalTime;
 
-            Session.stopTimer(
+            await Session.stopTimer(
                 this.sessions[index].uuid,
                 totalTime
             );
+
+            this.onSessionEdit(index);
         },
     },
 

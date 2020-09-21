@@ -5,19 +5,10 @@
         @click.right.prevent="openContextMenu"
     >
         <div class="px-6 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900 w-8/12">
-            <span v-if="state == 'default'" @dblclick.stop="edit" class="w-full">
+            <span @dblclick.stop="edit" class="w-full">
                 <p class="block mb-1 leading-none truncate" :title="session.name">{{ session.name }}</p>
                 <p class="block leading-none text-xs text-gray-400">{{ session.date }}</p>
             </span>
-
-            <input
-                type="text"
-                class="form-input block w-full transition duration-150 ease-in-out text-sm leading-5"
-                :value="session.name"
-                @keydown.enter="save"
-                ref="input"
-                v-else
-            >
         </div>
 
         <div class="px-6 py-4 text-right">
@@ -43,7 +34,7 @@ export default {
     },
 
     components: {
-        Timer
+        Timer,
     },
 
     mounted () {
@@ -74,20 +65,11 @@ export default {
         },
 
         edit () {
-            this.state = 'edit';
-
-            this.$nextTick(() => {
-                this.$refs.input.focus();
-            });
+            this.$emit('session:edit');
         },
 
         delete () {
             this.$emit('session:deleted');
-        },
-
-        save (event) {
-            this.$emit('session:updated', event.target.value);
-            this.state = 'default';
         },
 
         onStopTimer (totalTime) {

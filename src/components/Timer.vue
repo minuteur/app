@@ -43,7 +43,6 @@ export default {
             this.currentTime = TimeManager.toSeconds(this.startedAt);
 
             this.interval = window.setInterval(() => {
-                console.log('running interval');
                 this.currentTime++;
             }, 1000);
         }
@@ -67,10 +66,7 @@ export default {
 
     watch: {
         isRunning (isRunning) {
-            console.log('is running changed', isRunning);
-
             if (isRunning === false && this.interval) {
-                console.log('clearing internval er');
                 window.clearInterval(this.interval);
             }
         }

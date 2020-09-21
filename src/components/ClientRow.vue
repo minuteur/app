@@ -6,7 +6,7 @@
         @dblclick="goToProjects"
     >
         <div class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-            <span v-if="state == 'default'">{{ client.name }}</span>
+            <span v-if="state == 'default'" @dblclick.stop="edit">{{ client.name }}</span>
 
             <input
                 type="text"
