@@ -32,7 +32,8 @@ const router = new VueRouter({
     routes: routes
 })
 
-DatabaseManager.init()
+DatabaseManager.init();
+DatabaseManager.migrate();
 
 new Vue({
     router: router,

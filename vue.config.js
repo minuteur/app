@@ -18,6 +18,19 @@ module.exports = {
         electronBuilder: {
             nodeIntegration: true,
             builderOptions: {
+                extraResources: [
+                    {
+                        from: 'migrations',
+                        to: 'migrations',
+                        filter: ['**/*'],
+                    },
+                    {
+                        from: 'db',
+                        to: 'db',
+                        filter: ['**/*'],
+                    }
+                ],
+
                 mac: {
                     hardenedRuntime: true,
                     entitlements: "./build/entitlements.mac.inherit.plist"
@@ -28,7 +41,7 @@ module.exports = {
                 publish: ['github'],
                 appId: 'com.minuteur',
                 afterSign: './afterSignHook.js'
-            }
+            },
         }
     }
 }

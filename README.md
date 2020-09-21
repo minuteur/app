@@ -19,3 +19,9 @@ Rolling back migrations:
 ```
 knex migrate:rollback --all
 ```
+
+### Building executables
+
+```
+yarn electron:build
+```

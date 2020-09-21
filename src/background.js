@@ -51,7 +51,7 @@ app.on('ready', async () => {
             : 'app://./index.html',
 
         browserWindow: {
-            alwaysOnTop: false,
+            alwaysOnTop: true,
             webPreferences: {
                 nodeIntegration: true,
             }

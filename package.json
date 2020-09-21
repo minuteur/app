@@ -1,7 +1,12 @@
 {
-  "name": "your-app-name",
-  "version": "0.1.0",
+  "name": "minuteur",
+  "version": "0.2.0",
   "private": true,
+  "author": {
+    "name": "Luis Dalmolin",
+    "email": "luis.nh@gmail.com",
+    "url": "https://luisdalmolin.dev"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -29,7 +34,7 @@
     "core-js": "^3.6.5",
     "electron-store": "^6.0.0",
     "electron-updater": "^4.3.4",
-    "knex": "^0.21.5",
+    "knex": "0.18.*",
     "menubar": "^9.0.1",
     "moment": "^2.28.0",
     "mssql": "^6.2.1",

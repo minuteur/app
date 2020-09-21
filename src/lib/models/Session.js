@@ -56,11 +56,6 @@ class Session {
      * @param {string} uuid
      */
     getRunningSession (uuid) {
-        console.log('getting running session', {
-            uuid: uuid,
-            state: SESSION_STATUS_RUNNING
-        });
-
         return DatabaseManager
             .select('*')
             .from('sessions')

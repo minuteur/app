@@ -1,11 +1,20 @@
+import knex from 'knex';
+import { resolve } from 'path';
+import { remote } from 'electron';
 import { v4 as uuidv4 } from 'uuid';
 
 class DatabaseManager {
-    init() {
+    init () {
         const environment = process.env.NODE_ENV || 'development';
-        const configuration = require('./../../knexfile')[environment];
+        let configuration = require('./../../knexfile')[environment];
+        configuration.connection.filename = resolve(remote.app.getAppPath(), `../${configuration.connection.filename}`);
+        console.log(configuration);
 
-        this.knexManager = require('knex')(configuration);
+        this.knexManager = knex(configuration);
+    }
+
+    migrate () {
+        // TODO
     }
 
     select (fields) {
