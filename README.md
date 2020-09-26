@@ -10,6 +10,8 @@ Minuteur is a Timer app built with Electron to solve a simple problem: Easy and 
 
 This app exposes an internal API so you can write your custom integration for it.
 
+Every time you see the `time` fields in the API, it will be in **seconds**.
+
 **Getting a summary of hours per day per project**
 
 ```json
@@ -20,14 +22,16 @@ curl http://localhost:22507/api/projects/summary/daily | jq
     "client_uuid": "68aae4be-1f24-4268-ad09-f9d9c7588d64",
     "name": "New project",
     "date": "2020-09-25",
-    "time": 7202
+    "time": 7202,
+    "notes": "Session 1 name, Session 2 name"
   },
   {
     "uuid": "ecfad1da-95a3-4355-b07e-7f205e8ea2ae",
     "client_uuid": "68aae4be-1f24-4268-ad09-f9d9c7588d64",
     "name": "New project",
     "date": "2020-09-26",
-    "time": 50
+    "time": 50055,
+    "notes": "Session 1 name, Session 2 name"
   }
 ]
 ```

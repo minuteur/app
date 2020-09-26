@@ -28,7 +28,8 @@ class Project {
         return DatabaseManager.select(
             'projects.*',
             'sessions.date',
-            DatabaseManager.raw('SUM(sessions.time) as time')
+            DatabaseManager.raw('SUM(sessions.time) as time'),
+            DatabaseManager.raw('GROUP_CONCAT(sessions.name, ", ") as notes'),
         )
             .from('projects')
             .innerJoin('sessions', 'sessions.project_uuid', 'projects.uuid')

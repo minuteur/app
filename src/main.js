@@ -50,6 +50,6 @@ new Vue({
  */
 const port = 22507;
 
-api.listen(22507, () => {
+api.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
