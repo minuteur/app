@@ -12,7 +12,7 @@ This app exposes an internal API so you can write your custom integration for it
 
 Every time you see the `time` fields in the API, it will be in **seconds**.
 
-**Getting a summary of hours per day per project**
+**Getting a daily summary of hours per project**
 
 ```json
 curl http://localhost:22507/api/projects/summary/daily | jq
@@ -34,6 +34,12 @@ curl http://localhost:22507/api/projects/summary/daily | jq
     "notes": "Session 1 name, Session 2 name"
   }
 ]
+```
+
+**Deleting all sessions for a given project**
+
+```bash
+curl -X DELETE "http://localhost:22507/api/projects/{uuid}/sessions/clear"
 ```
 
 ### Setting up locally

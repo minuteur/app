@@ -112,6 +112,7 @@ import Session from '@models/Session';
 import { SESSION_STATUS_DONE, SESSION_STATUS_RUNNING } from '@models/Session';
 import Layout from '@components/Layout';
 import SessionRow from '@components/SessionRow';
+import EventManager from '@lib/EventManager'
 
 export default {
     name: 'Sessions',
@@ -127,6 +128,12 @@ export default {
         if (this.$route.params.start === true && ! this.hasRunningSession) {
             this.create();
         }
+
+        EventManager.listen('sessions.changed', async () => {
+            console.log('Sessions updated via API, re-fetching to make sure the app is up-to-date');
+
+            await this.fetchSessions();
+        });
     },
 
     data () {

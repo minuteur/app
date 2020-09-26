@@ -1,5 +1,6 @@
 import Project from '@models/Project'
 import Session from '@models/Session'
+import EventManager from '@lib/EventManager'
 
 const express = require('express')
 const api = express()
@@ -28,6 +29,8 @@ api.get('/api/projects/summary/daily', async (req, res) => {
 api.delete('/api/projects/:project/sessions/clear', async (req, res) => {
     const project = req.project;
     await Session.deleteFromProject(project.uuid);
+
+    EventManager.fire('sessions.changed');
 
     res.sendStatus(204);
 });

@@ -54,6 +54,7 @@ class Session {
     async deleteFromProject (project_uuid) {
         await DatabaseManager.getInstance('sessions')
             .where('project_uuid', project_uuid)
+            .where('state', SESSION_STATUS_DONE)
             .delete();
     }
 
