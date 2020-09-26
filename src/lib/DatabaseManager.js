@@ -9,6 +9,8 @@ class DatabaseManager {
         let configuration = require('./../../knexfile')[environment];
         configuration.connection.filename = resolve(remote.app.getAppPath(), `../${configuration.connection.filename}`);
 
+        console.info('Connection configuration', configuration);
+
         this.knexManager = knex(configuration);
     }
 

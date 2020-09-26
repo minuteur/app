@@ -51,6 +51,12 @@ class Session {
             });
     }
 
+    async deleteFromProject (project_uuid) {
+        await DatabaseManager.getInstance('sessions')
+            .where('project_uuid', project_uuid)
+            .delete();
+    }
+
     /**
      * Get the running session for a specific project.
      * @param {string} uuid

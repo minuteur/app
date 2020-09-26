@@ -1,4 +1,5 @@
-import DatabaseManager from './../DatabaseManager'
+import DatabaseManager from './../DatabaseManager';
+import { SESSION_STATUS_DONE } from './Session';
 
 class Project {
     async all (clientUuid) {
@@ -33,7 +34,8 @@ class Project {
         )
             .from('projects')
             .innerJoin('sessions', 'sessions.project_uuid', 'projects.uuid')
-            .groupBy('sessions.date');
+            .where('sessions.state', '=', SESSION_STATUS_DONE)
+            .groupByRaw('sessions.date, projects.uuid');
 
         // select projects.*, sessions.date, SUM(sessions.time)
         // from projects
