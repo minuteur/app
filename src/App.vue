@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: 'App'
+    name: 'App',
 }
 </script>
 
@@ -26,6 +26,7 @@ html, body {
 .fade-enter-active, .fade-leave-active {
     transition: opacity .25s;
 }
+
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
 }

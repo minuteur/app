@@ -1,6 +1,6 @@
 {
   "name": "minuteur",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": true,
   "author": {
     "name": "Luis Dalmolin",
@@ -34,7 +34,8 @@
     "core-js": "^3.6.5",
     "electron-store": "^6.0.0",
     "electron-updater": "^4.3.4",
-    "knex": "0.18.*",
+    "express": "^4.17.1",
+    "knex": "^0.21.5",
     "menubar": "^9.0.1",
     "moment": "^2.28.0",
     "mssql": "^6.2.1",

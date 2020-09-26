@@ -5,6 +5,7 @@ import Home from '@pages/Home'
 import Projects from '@pages/Projects'
 import Sessions from '@pages/Sessions'
 import DatabaseManager from './lib/DatabaseManager'
+import api from './api';
 
 const Storage = require('electron-store');
 
@@ -38,4 +39,17 @@ DatabaseManager.migrate();
 new Vue({
     router: router,
     render: h => h(App),
+
+    beforeDestroy () {
+        console.log('before destroy!');
+    }
 }).$mount('#app')
+
+/**
+ * Starting the API server...
+ */
+const port = 22507;
+
+api.listen(22507, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+});

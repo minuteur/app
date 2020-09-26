@@ -8,7 +8,6 @@ class DatabaseManager {
         const environment = process.env.NODE_ENV || 'development';
         let configuration = require('./../../knexfile')[environment];
         configuration.connection.filename = resolve(remote.app.getAppPath(), `../${configuration.connection.filename}`);
-        console.log(configuration);
 
         this.knexManager = knex(configuration);
     }
@@ -17,8 +16,12 @@ class DatabaseManager {
         // TODO
     }
 
-    select (fields) {
-        return this.knexManager.select(fields);
+    select (...fields) {
+        return this.knexManager.select(...fields);
+    }
+
+    raw (...fields) {
+        return this.knexManager.raw(...fields);
     }
 
     async insert (table, fields) {
@@ -29,8 +32,12 @@ class DatabaseManager {
         return fields['uuid'];
     }
 
-    getInstance (parameters) {
-        return this.knexManager(parameters);
+    getInstance (parameters = null) {
+        if (parameters) {
+            return this.knexManager(parameters);
+        }
+
+        return this.knexManager;
     }
 }
 

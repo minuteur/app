@@ -9,7 +9,6 @@ class Project {
     }
 
     async find (uuid) {
-        console.log('finding uuid', uuid);
         return DatabaseManager.select('*').from('projects').where('uuid', uuid).first();
     }
 
@@ -23,6 +22,22 @@ class Project {
         await DatabaseManager.getInstance('projects')
             .where('uuid', uuid)
             .update(fields);
+    }
+
+    async summary () {
+        return DatabaseManager.select(
+            'projects.*',
+            'sessions.date',
+            DatabaseManager.raw('SUM(sessions.time) as time')
+        )
+            .from('projects')
+            .innerJoin('sessions', 'sessions.project_uuid', 'projects.uuid')
+            .groupBy('sessions.date');
+
+        // select projects.*, sessions.date, SUM(sessions.time)
+        // from projects
+        // inner join sessions on sessions.project_uuid = projects.uuid
+        // group by sessions."date"
     }
 }
 
