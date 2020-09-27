@@ -1,17 +1,27 @@
 const path = require('path');
+const { IgnorePlugin } = require('webpack');
 
 module.exports = {
     configureWebpack: {
         devtool: 'source-map',
 
         resolve: {
+            mainFields: ['module', 'main'],
             alias: {
+                'knex-migrations': path.resolve(__dirname, 'node_modules', 'knex/lib/migrate'),
                 '@lib': path.resolve(__dirname, 'src', 'lib'),
                 '@models': path.resolve(__dirname, 'src', 'lib/models'),
                 '@components': path.resolve(__dirname, 'src', 'components'),
                 '@pages': path.resolve(__dirname, 'src', 'components/pages'),
             }
-        }
+        },
+
+        plugins: [
+            new IgnorePlugin({
+                resourceRegExp: /\/migrate$/,
+                contextRegExp: /knex$/
+            })
+        ]
     },
 
     pluginOptions: {
@@ -25,9 +35,8 @@ module.exports = {
                         filter: ['**/*'],
                     },
                     {
-                        from: 'db',
-                        to: 'db',
-                        filter: ['**/*'],
+                        from: 'db/.gitignore',
+                        to: 'db/.gitignore'
                     }
                 ],
 

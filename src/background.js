@@ -51,11 +51,12 @@ app.on('ready', async () => {
             : 'app://./index.html',
 
         browserWindow: {
-            alwaysOnTop: true,
+            alwaysOnTop: isDevelopment,
             webPreferences: {
                 nodeIntegration: true,
             }
         },
+
         icon: join(__static, 'IconTemplate.png')
     });
 

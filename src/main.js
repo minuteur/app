@@ -34,22 +34,22 @@ const router = new VueRouter({
 })
 
 DatabaseManager.init();
-DatabaseManager.migrate();
+DatabaseManager.migrate().then(() => {
+    new Vue({
+        router: router,
+        render: h => h(App),
 
-new Vue({
-    router: router,
-    render: h => h(App),
+        beforeDestroy () {
+            console.log('before destroy!');
+        }
+    }).$mount('#app')
 
-    beforeDestroy () {
-        console.log('before destroy!');
-    }
-}).$mount('#app')
+    /**
+     * Starting the API server...
+     */
+    const port = 22507;
 
-/**
- * Starting the API server...
- */
-const port = 22507;
-
-api.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    api.listen(port, () => {
+        console.log(`Example app listening at http://localhost:${port}`);
+    });
 });

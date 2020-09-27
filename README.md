@@ -6,6 +6,10 @@ Minuteur is a Timer app built with Electron to solve a simple problem: Easy and 
 
 ![](https://www.dropbox.com/s/nrxmjzfg0icylw2/Screen%20Shot%202020-09-26%20at%2008.39.38.png?raw=1)
 
+## Download
+
+To download the latest version
+
 ## API
 
 This app exposes an internal API so you can write your custom integration for it.
@@ -47,8 +51,8 @@ curl -X DELETE "http://localhost:22507/api/projects/{uuid}/sessions/clear"
 After cloning this repo, simply run:
 
 ```
+sed '/Migrator.js/d' node_modules/knex/package.json > node_modules/knex/package.json.tmp && mv node_modules/knex/package.json.tmp node_modules/knex/package.json
 yarn install
-knex migrate:latest
 yarn electron:serve
 ```
 
