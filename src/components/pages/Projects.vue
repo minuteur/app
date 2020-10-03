@@ -8,6 +8,13 @@
             </router-link>
         </template>
 
+        <template #header-center>
+            <div class="text-center">
+                <h4 class="mb-1 leading-none text-xs text-gray-200">Client</h4>
+                <h3 class="mb-0 leading-none text-lg">Projects</h3>
+            </div>
+        </template>
+
         <template #default>
             <div class="flex flex-col h-screen-85vh">
                 <div class="flex-grow">
@@ -23,6 +30,7 @@
 
                     <div v-else class="h-full flex flex-col justify-center self-center">
                         <div class="text-center">
+                            <p class="mb-6 text-gray-800">No projects yet..</p>
                             <img src="./../../assets/empty.svg" alt="No clients found" class="inline">
                         </div>
                     </div>
@@ -70,7 +78,7 @@ export default {
         },
 
         async fetchProjects () {
-            this.projects = await Project.all(this.$route.params.uuid);
+            this.projects = await Project.allFromClient(this.$route.params.uuid);
         },
 
         async onProjectUpdated (index, name) {

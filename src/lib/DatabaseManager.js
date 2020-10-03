@@ -9,8 +9,8 @@ class DatabaseManager {
         const environment = process.env.NODE_ENV || 'development';
         let configuration = require('./../../knexfile')[environment];
 
-        configuration.connection.filename = resolve(remote.app.getAppPath(), `../${configuration.connection.filename}`);
-        configuration.migrations.directory = resolve(remote.app.getAppPath(), `../${configuration.migrations.directory}`);
+        configuration.connection.filename = resolve(remote.app.getPath('userData'), `../${configuration.connection.filename}`);
+        configuration.migrations.directory = resolve(remote.app.getPath('userData'), `../${configuration.migrations.directory}`);
 
         console.info('Connection configuration', configuration);
 

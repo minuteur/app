@@ -2,7 +2,13 @@ import DatabaseManager from './../DatabaseManager';
 import { SESSION_STATUS_DONE } from './Session';
 
 class Project {
-    async all (clientUuid) {
+    async all () {
+        return await DatabaseManager
+            .select('*')
+            .from('projects');
+    }
+
+    async allFromClient (clientUuid) {
         return await DatabaseManager
             .select('*')
             .where('client_uuid', clientUuid)
@@ -36,11 +42,6 @@ class Project {
             .innerJoin('sessions', 'sessions.project_uuid', 'projects.uuid')
             .where('sessions.state', '=', SESSION_STATUS_DONE)
             .groupByRaw('sessions.date, projects.uuid');
-
-        // select projects.*, sessions.date, SUM(sessions.time)
-        // from projects
-        // inner join sessions on sessions.project_uuid = projects.uuid
-        // group by sessions."date"
     }
 }
 

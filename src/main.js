@@ -1,11 +1,11 @@
 import Vue from 'vue'
+import api from './api';
 import App from './App.vue'
-import VueRouter from 'vue-router'
 import Home from '@pages/Home'
+import VueRouter from 'vue-router'
 import Projects from '@pages/Projects'
 import Sessions from '@pages/Sessions'
 import DatabaseManager from './lib/DatabaseManager'
-import api from './api';
 
 const Storage = require('electron-store');
 

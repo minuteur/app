@@ -7,17 +7,16 @@ import { autoUpdater } from "electron-updater"
 import { menubar } from 'menubar';
 import { join } from 'path';
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
-
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true } }
-])
+]);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -57,7 +56,7 @@ app.on('ready', async () => {
             }
         },
 
-        icon: join(__static, 'IconTemplate.png')
+        icon: join(__static, isDevelopment ? 'IconTemplate-Dev.png' : 'IconTemplate.png'),
     });
 
     mb.on('ready', () => {

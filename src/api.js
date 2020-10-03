@@ -15,12 +15,36 @@ api.param('project', async (req, res, next, id) => {
   })
 
 /**
+ * Returns a list of all the active projects
+ */
+api.get('/api/projects', async (req, res) => {
+    const projects = await Project.all();
+
+    res.json(projects);
+});
+
+/**
  * Returns a daily summary per project.
  */
 api.get('/api/projects/summary/daily', async (req, res) => {
     const summary = await Project.summary();
 
     res.json(summary);
+});
+
+/**
+ * Start a new session in a given project.
+ */
+api.post('/api/projects/:project/sessions', async (req, res) => {
+    const project = req.project;
+    await Session.create({
+        project_uuid: project.uuid,
+        name: 'Session'
+    });
+
+    EventManager.fire('sessions.changed');
+
+    res.sendStatus(204);
 });
 
 /**
