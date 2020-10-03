@@ -1,6 +1,6 @@
 <template>
     <div
-        :class="[odd ? 'bg-gray-100 hover:bg-gray-300' : 'bg-gray-300 hover:bg-gray-500']"
+        :class="[odd ? 'bg-gray-100 hover:bg-gray-300' : 'bg-gray-200 hover:bg-gray-400']"
         class="flex justify-between items-center transition duration-100"
         @click.right.prevent="openContextMenu"
     >

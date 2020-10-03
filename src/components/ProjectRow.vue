@@ -5,8 +5,12 @@
         @click.right.prevent="openContextMenu"
         @dblclick="goToSession"
     >
-        <div class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
-            <span v-if="state == 'default'" @dblclick.stop="edit">{{ project.name }}</span>
+        <div class="px-4 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
+            <div class="flex items-center" v-if="state == 'default'" @dblclick.stop="edit">
+                <span class="mr-3">{{ project.name }}</span>
+
+                <Timer :time="project.total_time" :is-running="false" title="Total timer so far" />
+            </div>
 
             <input
                 type="text"
@@ -18,7 +22,7 @@
             >
         </div>
 
-        <div class="px-6 py-4 text-right">
+        <div class="px-4 py-4 text-right">
             <div v-if="runningSession">
                 <Timer
                     :time="runningSession.time"
@@ -80,11 +84,19 @@ export default {
 
             const menu = new Menu();
             menu.append(new MenuItem({
+                label: 'View',
+                click: () => this.view(),
+            }));
+            menu.append(new MenuItem({
                 label: 'Edit',
                 click: () => this.edit(),
-            }))
+            }));
 
             menu.popup({ window: remote.getCurrentWindow() });
+        },
+
+        view () {
+            this.goToSession();
         },
 
         edit () {
@@ -110,7 +122,6 @@ export default {
         },
 
         goToSession (extraParams = {}) {
-            console.log('come on');
             // this.$router.push(`/clients/${this.$route.params.uuid}/projects/${this.project.uuid}/sessions`);
             this.$router.push({
                 name: 'client.projects.sessions',

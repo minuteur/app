@@ -18,6 +18,14 @@ class TimeManager {
     }
 
     /**
+     * Get the time in seconds and convert to H:i:s
+     * @param {int} totalSeconds
+     */
+    toFormattedTimeWithoutSeconds (totalSeconds) {
+        return new Date(totalSeconds * 1000).toISOString().substr(11, 5);
+    }
+
+    /**
      * Get the number of hours for a given number of seconds in a hour:minute:seconds perspective.
      * @param {int} totalSeconds
      */

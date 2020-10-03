@@ -81,7 +81,8 @@ api.delete('/api/projects/:project/session/running', async (req, res) => {
         return;
     }
 
-    Session.stopTimer(runningSession.uuid, TimeManager.toSeconds(runningSession.starter_at));
+    console.log('total seconds', TimeManager.toSeconds(runningSession.started_at));
+    Session.stopTimer(runningSession.uuid, TimeManager.toSeconds(runningSession.started_at));
 
     EventManager.fire('sessions.changed');
 

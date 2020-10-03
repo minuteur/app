@@ -100,6 +100,12 @@
 
                 <footer class="flex justify-between px-6 py-2 bg-gray-800 text-white">
                     <button type="button" @click="create" title="Add new session">+</button>
+
+                    <div class="px-4 py-1 text-xs bg-gray-900 text-white text-center rounded-md">
+                        {{ totalTime }} total
+                    </div>
+
+                    <div>&nbsp;</div>
                 </footer>
             </div>
         </template>
@@ -225,6 +231,14 @@ export default {
             return this.sessions.filter((session) => {
                 return session.state === SESSION_STATUS_RUNNING;
             }).length > 0;
+        },
+
+        totalTime () {
+            const totalTime = this.sessions.reduce((total, session) => {
+                return total + session.time;
+            }, 0);
+
+            return TimeManager.toFormattedTimeWithoutSeconds(totalTime);
         }
     }
 }
