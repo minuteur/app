@@ -8,9 +8,13 @@ Minuteur is a Timer app built with Electron to solve a simple problem: Easy and 
 
 ## Download
 
-To download the latest version
+To download the latest version, go to [releases](https://github.com/minuteur/app/releases/latest) and download the latest version for your OS.
 
-## API
+### CLI
+
+There's also a CLI tool + an Alfred Workflow to make your life easier. To check it out, check the [latest release](https://github.com/minuteur/cli/releases/latest) on the CLI tool.
+
+### API
 
 This app exposes an internal API so you can write your custom integration for it.
 
@@ -58,7 +62,7 @@ curl -X POST "http://localhost:22507/api/projects/{uuid}/sessions/running"
 curl -X DELETE "http://localhost:22507/api/projects/{uuid}/sessions/clear"
 ```
 
-### Setting up locally
+## Setting up locally
 
 After cloning this repo, simply run:
 
