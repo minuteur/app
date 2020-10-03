@@ -2,15 +2,21 @@ import DatabaseManager from './../DatabaseManager';
 import { SESSION_STATUS_DONE } from './Session';
 
 class Project {
-    async all () {
-        return await DatabaseManager
-            .select('*')
+    async all (callback) {
+        let query = DatabaseManager
+            .select('projects.*')
             .from('projects');
+
+        if (typeof callback === 'function') {
+            callback(query);
+        }
+
+        return await query;
     }
 
     async allFromClient (clientUuid) {
         return await DatabaseManager
-            .select('*')
+            .select('projects.*')
             .where('client_uuid', clientUuid)
             .from('projects');
     }

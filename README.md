@@ -40,6 +40,18 @@ curl http://localhost:22507/api/projects/summary/daily | jq
 ]
 ```
 
+**Starting a timer for a given project**
+
+```bash
+curl -X POST "http://localhost:22507/api/projects/{uuid}/sessions"
+```
+
+**Stopping the running timer for a given project**
+
+```bash
+curl -X POST "http://localhost:22507/api/projects/{uuid}/sessions/running"
+```
+
 **Deleting all sessions for a given project**
 
 ```bash

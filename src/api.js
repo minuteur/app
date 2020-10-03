@@ -1,4 +1,5 @@
 import Project from '@models/Project';
+import { SESSION_STATUS_RUNNING } from '@models/Session';
 import Session from '@models/Session';
 import EventManager from '@lib/EventManager';
 import TimeManager from '@lib/TimeManager';
@@ -19,7 +20,16 @@ api.param('project', async (req, res, next, id) => {
  * Returns a list of all the active projects
  */
 api.get('/api/projects', async (req, res) => {
-    const projects = await Project.all();
+    const projects = await Project.all((query) => {
+        if (req.query.q) {
+            query.where('projects.name', 'like', `${req.query.q}%`);
+        }
+
+        if (req.query.only_running) {
+            query.innerJoin('sessions', 'sessions.project_uuid', 'projects.uuid')
+                 .where('sessions.state', '=', SESSION_STATUS_RUNNING);
+        }
+    });
 
     res.json(projects);
 });
@@ -61,8 +71,6 @@ api.post('/api/projects/:project/sessions', async (req, res) => {
  * Stop the first running session for a given project.
  */
 api.delete('/api/projects/:project/session/running', async (req, res) => {
-    console.log('stopping running session');
-
     const project = req.project;
     const runningSession = await Session.getRunningSession(project.uuid);
 
