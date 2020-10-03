@@ -136,6 +136,10 @@ export default {
         });
     },
 
+    beforeDestroy () {
+        EventManager.clear('sessions.changed');
+    },
+
     data () {
         return {
             state: 'default',

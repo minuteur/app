@@ -39,8 +39,9 @@
 <script>
 import { remote } from 'electron';
 const { Menu, MenuItem } = remote;
-import Session from '@models/Session'
+import Session from '@models/Session';
 import Timer from '@components/Timer';
+import EventManager from '@lib/EventManager';
 
 export default {
     props: {
@@ -61,6 +62,16 @@ export default {
 
     async mounted () {
         this.runningSession = await Session.getRunningSession(this.project.uuid);
+
+        EventManager.listen('sessions.changed', async () => {
+            console.log('[ProjectRow.vue] Sessions updated via API, re-fetching to make sure the app is up-to-date');
+
+            this.runningSession = await Session.getRunningSession(this.project.uuid);
+        });
+    },
+
+    beforeDestroy () {
+        EventManager.clear('sessions.changed');
     },
 
     methods: {

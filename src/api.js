@@ -1,6 +1,7 @@
-import Project from '@models/Project'
-import Session from '@models/Session'
-import EventManager from '@lib/EventManager'
+import Project from '@models/Project';
+import Session from '@models/Session';
+import EventManager from '@lib/EventManager';
+import TimeManager from '@lib/TimeManager';
 
 const express = require('express')
 const api = express()
@@ -37,10 +38,42 @@ api.get('/api/projects/summary/daily', async (req, res) => {
  */
 api.post('/api/projects/:project/sessions', async (req, res) => {
     const project = req.project;
+    const runningSession = await Session.getRunningSession(project.uuid);
+
+    if (runningSession !== null && typeof runningSession !== 'undefined') {
+        res.status(422).json({
+            error: "There's already a running session",
+        });
+        return;
+    }
+
     await Session.create({
         project_uuid: project.uuid,
         name: 'Session'
     });
+
+    EventManager.fire('sessions.changed');
+
+    res.sendStatus(204);
+});
+
+/**
+ * Stop the first running session for a given project.
+ */
+api.delete('/api/projects/:project/session/running', async (req, res) => {
+    console.log('stopping running session');
+
+    const project = req.project;
+    const runningSession = await Session.getRunningSession(project.uuid);
+
+    if (runningSession === null && typeof runningSession === 'undefined') {
+        res.status(404).json({
+            error: "There's no running session for this project",
+        });
+        return;
+    }
+
+    Session.stopTimer(runningSession.uuid, TimeManager.toSeconds(runningSession.starter_at));
 
     EventManager.fire('sessions.changed');
 

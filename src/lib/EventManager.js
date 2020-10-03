@@ -12,6 +12,10 @@ class EventManager {
     fire (event, ...params) {
         this.vue.$emit(event, ...params);
     }
+
+    clear (event) {
+        this.vue.$off(event);
+    }
 }
 
 export default new EventManager;

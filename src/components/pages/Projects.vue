@@ -46,8 +46,8 @@
 
 <script>
 import Layout from '@components/Layout';
-import ProjectRow from '@components/ProjectRow'
-import Project from '@models/Project'
+import ProjectRow from '@components/ProjectRow';
+import Project from '@models/Project';
 
 export default {
     name: 'Projects',
