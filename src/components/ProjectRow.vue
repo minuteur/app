@@ -1,6 +1,6 @@
 <template>
     <div
-        :class="[odd ? 'bg-gray-100 hover:bg-gray-300' : 'bg-gray-300 hover:bg-gray-500']"
+        :class="[odd ? 'bg-gray-100 hover:bg-gray-300' : 'bg-gray-200 hover:bg-gray-300']"
         class="flex justify-between items-center select-none transition duration-100"
         @click.right.prevent="openContextMenu"
         @dblclick="goToSession"
@@ -9,7 +9,12 @@
             <div class="flex items-center" v-if="state == 'default'" @dblclick.stop="edit">
                 <span class="mr-3">{{ project.name }}</span>
 
-                <Timer :time="project.total_time" :is-running="false" title="Total timer so far" />
+                <Timer
+                    v-if="totalTimeSpent > 0"
+                    :time="totalTimeSpent"
+                    :is-running="false"
+                    title="Total timer so far"
+                />
             </div>
 
             <input
@@ -50,7 +55,7 @@ import EventManager from '@lib/EventManager';
 export default {
     props: {
         project: Object,
-        odd: Boolean
+        odd: Boolean,
     },
 
     components: {
@@ -61,11 +66,14 @@ export default {
         return {
             state: 'default',
             runningSession: null,
+            totalTimeSpent: 0,
         };
     },
 
-    async mounted () {
+    async created () {
         this.runningSession = await Session.getRunningSession(this.project.uuid);
+        const totalTimeSpent = await Session.totalTimeSpend(this.project.uuid);
+        this.totalTimeSpent = totalTimeSpent.total;
 
         EventManager.listen('sessions.changed', async () => {
             console.log('[ProjectRow.vue] Sessions updated via API, re-fetching to make sure the app is up-to-date');

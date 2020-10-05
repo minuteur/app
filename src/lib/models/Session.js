@@ -1,5 +1,6 @@
 import moment from 'moment';
-import DatabaseManager from './../DatabaseManager';
+import { ipcRenderer } from 'electron';
+import DatabaseManager from '@lib/DatabaseManager';
 
 const SESSION_STATUS_RUNNING = 'running';
 const SESSION_STATUS_DONE = 'done';
@@ -13,7 +14,17 @@ class Session {
     }
 
     async find (uuid) {
-        return DatabaseManager.select('*').from('sessions').where('uuid', uuid).first();
+        return DatabaseManager.select('*')
+            .from('sessions')
+            .where('uuid', uuid)
+            .first();
+    }
+
+    async totalTimeSpend (project_uuid) {
+        return DatabaseManager.select(DatabaseManager.raw('SUM(sessions.time) as total'))
+            .from('sessions')
+            .where('project_uuid', project_uuid)
+            .first();
     }
 
     async create (fields) {
@@ -26,6 +37,9 @@ class Session {
                 time: 1
             }
         });
+
+        // sending a message to the background process so it can change the icon :)
+        ipcRenderer.send('timer:started', {});
 
         return this.find(sessiontUuid);
     }
@@ -49,6 +63,9 @@ class Session {
                 time: time,
                 state: SESSION_STATUS_DONE
             });
+
+        // sending a message to the background process so it can change the icon :)
+        ipcRenderer.send('timer:stopped', {});
     }
 
     async deleteFromProject (project_uuid) {

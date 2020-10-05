@@ -16,10 +16,7 @@ class Project {
 
     async allFromClient (clientUuid) {
         return await DatabaseManager
-            .select('projects.*', DatabaseManager.raw('SUM(sessions.time) as total_time'))
-            .innerJoin('sessions', function () {
-                this.on('sessions.project_uuid', '=', 'projects.uuid');
-            })
+            .select('projects.*')
             .where('client_uuid', clientUuid)
             .from('projects');
     }

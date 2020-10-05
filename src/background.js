@@ -1,17 +1,24 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import { autoUpdater } from "electron-updater"
-import { menubar } from 'menubar';
 import { join } from 'path';
+import { menubar } from 'menubar';
+import { autoUpdater } from "electron-updater"
+import { app, protocol, Menu, Tray, BrowserWindow, ipcMain } from 'electron';
+import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let win;
+// Tray instance
+let tray;
+
+ipcMain.on('timer:started', (event, args) => {
+    tray.setImage(join(__static, 'IconTemplatePlay.png'));
+});
+
+ipcMain.on('timer:stopped', (event, args) => {
+    tray.setImage(join(__static, 'IconTemplate.png'));
+});
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -44,6 +51,12 @@ app.on('ready', async () => {
         createProtocol('app')
     }
 
+    tray = new Tray(join(__static, isDevelopment ? 'IconTemplate-Dev.png' : 'IconTemplate.png'));
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Quit', type: 'radio' },
+    ]);
+    tray.setToolTip('Minuteur');
+
     const bar = menubar({
         index: process.env.WEBPACK_DEV_SERVER_URL
             ? process.env.WEBPACK_DEV_SERVER_URL
@@ -56,12 +69,13 @@ app.on('ready', async () => {
             }
         },
 
-        icon: join(__static, isDevelopment ? 'IconTemplate-Dev.png' : 'IconTemplate.png'),
+        tray: tray,
+        // icon: join(__static, isDevelopment ? 'IconTemplate-Dev.png' : 'IconTemplate.png'),
     });
 
     mb.on('ready', () => {
         mb.showWindow();
-    })
+    });
 })
 
 // Exit cleanly on request from parent process in development mode.
