@@ -4,8 +4,11 @@ import Session from '@models/Session';
 import EventManager from '@lib/EventManager';
 import TimeManager from '@lib/TimeManager';
 
-const express = require('express')
-const api = express()
+const express = require('express');
+const bodyParser = require('body-parser');
+const api = express();
+api.use(bodyParser.urlencoded({ extended: true }));
+api.use(bodyParser.json());
 
 api.param('project', async (req, res, next, id) => {
     try {
@@ -70,7 +73,7 @@ api.post('/api/projects/:project/sessions', async (req, res) => {
 /**
  * Stop the first running session for a given project.
  */
-api.delete('/api/projects/:project/session/running', async (req, res) => {
+api.post('/api/projects/:project/session/running/stop', async (req, res) => {
     const project = req.project;
     const runningSession = await Session.getRunningSession(project.uuid);
 
@@ -83,7 +86,8 @@ api.delete('/api/projects/:project/session/running', async (req, res) => {
 
     Session.stopTimer(
         runningSession.uuid,
-        TimeManager.toSeconds(runningSession.started_at)
+        TimeManager.toSeconds(runningSession.started_at),
+        req.body.name || ''
     );
 
     EventManager.fire('sessions.changed');

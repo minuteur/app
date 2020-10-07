@@ -1,6 +1,6 @@
 {
   "name": "minuteur",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "private": true,
   "author": {
     "name": "Luis Dalmolin",
@@ -31,6 +31,7 @@
   "dependencies": {
     "@sentry/electron": "^2.0.0",
     "@tailwindcss/ui": "^0.6.0",
+    "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "electron-store": "^6.0.0",
     "electron-updater": "^4.3.4",

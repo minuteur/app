@@ -67,8 +67,8 @@ curl -X DELETE "http://localhost:22507/api/projects/{uuid}/sessions/clear"
 After cloning this repo, simply run:
 
 ```
-sed '/Migrator.js/d' node_modules/knex/package.json > node_modules/knex/package.json.tmp && mv node_modules/knex/package.json.tmp node_modules/knex/package.json
 yarn install
+sed '/Migrator.js/d' node_modules/knex/package.json > node_modules/knex/package.json.tmp && mv node_modules/knex/package.json.tmp node_modules/knex/package.json
 yarn electron:serve
 ```
 

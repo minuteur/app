@@ -56,12 +56,13 @@ class Session {
             .delete();
     }
 
-    async stopTimer (uuid, time) {
+    async stopTimer (uuid, time, name) {
         await DatabaseManager.getInstance('sessions')
             .where('uuid', uuid)
             .update({
                 time: time,
-                state: SESSION_STATUS_DONE
+                state: SESSION_STATUS_DONE,
+                name: name || 'Session'
             });
 
         // sending a message to the background process so it can change the icon :)
