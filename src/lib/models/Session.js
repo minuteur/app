@@ -62,7 +62,7 @@ class Session {
             .update({
                 time: time,
                 state: SESSION_STATUS_DONE,
-                name: name || 'Session'
+                name: name || null
             });
 
         // sending a message to the background process so it can change the icon :)

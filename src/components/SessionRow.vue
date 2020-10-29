@@ -6,7 +6,8 @@
     >
         <div class="px-6 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900 w-8/12">
             <span @dblclick.stop="edit" class="w-full">
-                <p class="block mb-1 leading-none truncate" :title="session.name">{{ session.name }}</p>
+                <p class="block mb-1 leading-none truncate" :title="session.name" v-if="session.name">{{ session.name }}</p>
+                <p class="block mb-1 leading-none truncate text-gray-400 opacity-50" :title="session.name" v-else>Unnamed Session</p>
                 <p class="block leading-none text-xs text-gray-400">{{ session.date }}</p>
             </span>
         </div>

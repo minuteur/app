@@ -160,7 +160,6 @@ export default {
         async create () {
             let session = await Session.create({
                 project_uuid: this.$route.params.projectUuid,
-                name: 'Session'
             });
 
             this.sessions.push(session);
