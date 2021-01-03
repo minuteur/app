@@ -4,6 +4,7 @@ class TimeManager {
     /**
      * Get the data diff in seconds.
      * @param {string} date
+     * @return {int}
      */
     toSeconds (date) {
         return moment().diff(moment(date), 'seconds');
@@ -57,6 +58,20 @@ class TimeManager {
      */
     convertToSeconds (hours, minutes, seconds) {
         return (parseInt(hours) * 60 * 60) + (parseInt(minutes) * 60) + (parseInt(seconds));
+    }
+
+    /**
+     * Round the time to the nearest 5 minutes.
+     * @param {int} seconds
+     * @return {int}
+     */
+    round (seconds) {
+        const min = 300;
+
+        if (seconds < min) {
+            seconds = min;
+        }
+        return Math.round(seconds / min) * min;
     }
 }
 

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { ipcRenderer } from 'electron';
+import TimeManager from '@lib/TimeManager';
 import DatabaseManager from '@lib/DatabaseManager';
 
 const SESSION_STATUS_RUNNING = 'running';
@@ -60,7 +61,7 @@ class Session {
         await DatabaseManager.getInstance('sessions')
             .where('uuid', uuid)
             .update({
-                time: time,
+                time: TimeManager.round(time),
                 state: SESSION_STATUS_DONE,
                 name: name || null
             });

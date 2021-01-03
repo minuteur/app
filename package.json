@@ -1,6 +1,6 @@
 {
   "name": "minuteur",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "private": true,
   "author": {
     "name": "Luis Dalmolin",
@@ -10,22 +10,23 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "publish:osx": "yarn electron:build -p always",
-    "publish:win": "yarn electron:build -- --win  --x64 --ia32 -p always",
-    "publish:linux": "yarn electron:build -- --linux -p always",
-    "publish:all": "yarn run publish:osx && yarn run publish:win && yarn run publish:linux",
+    "build:all": "yarn run build:osx && yarn run build:win && yarn run build:linux",
+    "build:linux": "yarn electron:build -p never -- --linux",
     "build:osx": "yarn electron:build -p never",
     "build:win": "yarn electron:build -p never -- --win  --x64 --ia32",
-    "build:linux": "yarn electron:build -p never -- --linux",
-    "build:all": "yarn run build:osx && yarn run build:win && yarn run build:linux",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:icon": "electron-icon-builder --input=./appIcon/icon.png --output=./build --flatten",
     "electron:keypair": "node generateKeypair.js",
     "electron:license": "node generateLicense.js",
-    "electron:icon": "electron-icon-builder --input=./appIcon/icon.png --output=./build --flatten",
-    "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "publish:all": "yarn run publish:osx && yarn run publish:win && yarn run publish:linux",
+    "publish:linux": "yarn electron:build -- --linux -p always",
+    "publish:osx": "yarn electron:build -p always",
+    "publish:win": "yarn electron:build -- --win  --x64 --ia32 -p always"
   },
   "main": "background.js",
   "dependencies": {
@@ -34,7 +35,7 @@
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
     "electron-store": "^6.0.0",
-    "electron-updater": "^4.3.4",
+    "electron-updater": "^4.3.5",
     "express": "^4.17.1",
     "knex": "^0.21.5",
     "menubar": "^9.0.1",
@@ -54,7 +55,9 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "dotenv": "^8.2.0",
     "electron": "^9.0.0",
@@ -84,11 +87,44 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      },
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      },
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/minuteur/app"
+  }
 }

@@ -2,10 +2,10 @@
 
 import { join } from 'path';
 import { menubar } from 'menubar';
-import { autoUpdater } from "electron-updater"
 import { app, protocol, Menu, Tray, BrowserWindow, ipcMain } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import { autoUpdater } from 'electron-updater';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -75,6 +75,10 @@ app.on('ready', async () => {
 
     mb.on('ready', () => {
         mb.showWindow();
+
+        if (! process.env.WEBPACK_DEV_SERVER_URL) {
+            autoUpdater.checkForUpdatesAndNotify();
+        }
     });
 })
 

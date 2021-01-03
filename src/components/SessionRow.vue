@@ -73,8 +73,8 @@ export default {
             this.$emit('session:deleted');
         },
 
-        onStopTimer (totalTime) {
-            this.$emit('session:stopped', totalTime);
+        onStopTimer () {
+            this.$emit('session:stopped');
         },
     },
 

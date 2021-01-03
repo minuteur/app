@@ -19,7 +19,7 @@
                                 @session:edit="() => onSessionEdit(index)"
                                 @session:deleted="() => onSessionDeleted(index)"
                                 @section:time-updated="(time) => session.time = time"
-                                @session:stopped="(totalTime) => onSessionStopped(index, totalTime)"
+                                @session:stopped="() => onSessionStopped(index)"
                             ></SessionRow>
                         </li>
                     </ul>
@@ -208,7 +208,9 @@ export default {
             this.sessions.splice(index, 1);
         },
 
-        async onSessionStopped (index, totalTime) {
+        async onSessionStopped (index) {
+            let totalTime = TimeManager.toSeconds(this.sessions[index].started_at);
+
             this.sessions[index].state = SESSION_STATUS_DONE;
             this.sessions[index].time = totalTime;
 
