@@ -1,6 +1,6 @@
 {
   "name": "minuteur",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "private": true,
   "author": {
     "name": "Luis Dalmolin",
@@ -23,7 +23,7 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "publish:all": "yarn run publish:osx && yarn run publish:win && yarn run publish:linux",
+    "publish:all": "yarn run publish:osx && yarn run publish:win",
     "publish:linux": "yarn electron:build -- --linux -p always",
     "publish:osx": "yarn electron:build -p always",
     "publish:win": "yarn electron:build -- --win  --x64 --ia32 -p always"
