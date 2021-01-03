@@ -48,6 +48,7 @@
 import Layout from '@components/Layout';
 import ProjectRow from '@components/ProjectRow';
 import Project from '@models/Project';
+import EventManager from '@lib/EventManager'
 
 export default {
     name: 'Projects',
@@ -59,6 +60,16 @@ export default {
 
     async mounted () {
         await this.fetchProjects();
+
+        EventManager.listen('sessions.changed', async () => {
+            console.log('Sessions updated via API, re-fetching to make sure the app is up-to-date');
+
+            await this.fetchProjects();
+        });
+    },
+
+    beforeDestroy () {
+        EventManager.clear('sessions.changed');
     },
 
     data () {

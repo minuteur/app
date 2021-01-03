@@ -118,7 +118,7 @@ import Session from '@models/Session';
 import { SESSION_STATUS_DONE, SESSION_STATUS_RUNNING } from '@models/Session';
 import Layout from '@components/Layout';
 import SessionRow from '@components/SessionRow';
-import EventManager from '@lib/EventManager'
+import EventManager from '@lib/EventManager';
 
 export default {
     name: 'Sessions',
@@ -209,7 +209,7 @@ export default {
         },
 
         async onSessionStopped (index) {
-            let totalTime = TimeManager.toSeconds(this.sessions[index].started_at);
+            let totalTime = TimeManager.round(TimeManager.toSeconds(this.sessions[index].started_at));
 
             this.sessions[index].state = SESSION_STATUS_DONE;
             this.sessions[index].time = totalTime;
