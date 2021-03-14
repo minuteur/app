@@ -21,10 +21,14 @@ class Session {
             .first();
     }
 
-    async totalTimeSpend (project_uuid) {
+    async totalTimeSpend (projectUuids) {
+        if (typeof projectUuids === 'string') {
+            projectUuids = [projectUuids];
+        }
+
         return DatabaseManager.select(DatabaseManager.raw('SUM(sessions.time) as total'))
             .from('sessions')
-            .where('project_uuid', project_uuid)
+            .whereIn('project_uuid', projectUuids)
             .first();
     }
 

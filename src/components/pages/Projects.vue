@@ -38,6 +38,16 @@
 
                 <footer class="flex justify-between px-6 py-2 bg-gray-800 text-white">
                     <button type="button" @click="create" title="Add new project">+</button>
+
+                    <div class="px-4 py-1 text-xs text-white text-center rounded-md flex items-center">
+                        <span class="mr-2">Total time:</span>
+                        <Timer
+                            v-if="totalTimeSpent > 0"
+                            :time="totalTimeSpent"
+                            :is-running="false"
+                            title="Total timer so far"
+                        />
+                    </div>
                 </footer>
             </div>
         </template>
@@ -48,23 +58,29 @@
 import Layout from '@components/Layout';
 import ProjectRow from '@components/ProjectRow';
 import Project from '@models/Project';
-import EventManager from '@lib/EventManager'
+import Session from '@models/Session';
+import EventManager from '@lib/EventManager';
+import Timer from '@components/Timer';
 
 export default {
     name: 'Projects',
 
     components: {
         Layout,
-        ProjectRow
+        ProjectRow,
+        Timer
     },
 
     async mounted () {
         await this.fetchProjects();
+        await this.fetchTotalTimeSpent();
 
         EventManager.listen('sessions.changed', async () => {
-            console.log('Sessions updated via API, re-fetching to make sure the app is up-to-date');
+            console.log('[Projects.vue] Sessions updated via API, re-fetching to make sure the app is up-to-date');
+            this.projects = [];
 
             await this.fetchProjects();
+            await this.fetchTotalTimeSpent();
         });
     },
 
@@ -74,7 +90,8 @@ export default {
 
     data () {
         return {
-            projects: []
+            projects: [],
+            totalTimeSpent: 0
         };
     },
 
@@ -90,6 +107,11 @@ export default {
 
         async fetchProjects () {
             this.projects = await Project.allFromClient(this.$route.params.uuid);
+        },
+
+        async fetchTotalTimeSpent () {
+            const totalTimeSpent = await Session.totalTimeSpend(this.projects.map(project => project.uuid));
+            this.totalTimeSpent = totalTimeSpent.total;
         },
 
         async onProjectUpdated (index, name) {

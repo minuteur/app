@@ -74,12 +74,6 @@ export default {
         this.runningSession = await Session.getRunningSession(this.project.uuid);
         const totalTimeSpent = await Session.totalTimeSpend(this.project.uuid);
         this.totalTimeSpent = totalTimeSpent.total;
-
-        EventManager.listen('sessions.changed', async () => {
-            console.log('[ProjectRow.vue] Sessions updated via API, re-fetching to make sure the app is up-to-date');
-
-            this.runningSession = await Session.getRunningSession(this.project.uuid);
-        });
     },
 
     beforeDestroy () {
