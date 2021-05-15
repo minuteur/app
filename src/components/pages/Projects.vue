@@ -24,6 +24,7 @@
                                 :project="project"
                                 :odd="index % 2 === 0"
                                 @project:updated="(name) => onProjectUpdated(index, name)"
+                                @project:deleted="() => onProjectDeleted(index)"
                             ></ProjectRow>
                         </li>
                     </ul>
@@ -121,6 +122,12 @@ export default {
                 this.projects[index].uuid,
                 { name: name }
             );
+        },
+
+        async onProjectDeleted (index) {
+            await Project.delete(this.projects[index].uuid);
+
+            this.projects.splice(index, 1);
         },
     }
 }

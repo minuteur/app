@@ -37,6 +37,16 @@ class Project {
             .update(fields);
     }
 
+    async delete (uuid) {
+        await DatabaseManager.getInstance('sessions')
+            .where('project_uuid', uuid)
+            .delete();
+
+        await DatabaseManager.getInstance('projects')
+            .where('uuid', uuid)
+            .delete();
+    }
+
     async summary () {
         return DatabaseManager.select(
             'projects.*',

@@ -1,6 +1,6 @@
 {
   "name": "minuteur",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "private": true,
   "author": {
     "name": "Luis Dalmolin",
@@ -48,6 +48,7 @@
     "pg-query-stream": "^3.2.3",
     "safe-umd-webpack-plugin": "^4.0.0",
     "sqlite3": "^5.0.0",
+    "sweetalert2": "^11.0.0",
     "uuid": "^8.3.0",
     "vue": "^2.6.11",
     "vue-router": "^3.4.3"

@@ -12,6 +12,7 @@ export default {
 
 <!-- Load Tailwind -->
 <style src="./assets/css/tailwind.css"></style>
+<style src="./assets/css/sweetalert2.css"></style>
 
 <style>
 html, body {
