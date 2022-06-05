@@ -23,6 +23,7 @@ class TimeManager {
      * @param {int} totalSeconds
      */
     toFormattedTimeWithoutSeconds (totalSeconds) {
+        console.log('toFormattedTimeWithoutSeconds', totalSeconds)
         return new Date(totalSeconds * 1000).toISOString().substr(11, 5);
     }
 

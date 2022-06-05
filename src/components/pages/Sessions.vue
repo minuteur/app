@@ -105,7 +105,11 @@
                         {{ totalTime }} total
                     </div>
 
-                    <div>&nbsp;</div>
+                    <div>
+                        <button type="button" @click="openTimer" title="Open timer" class="text-sm text-white">
+                            <img src="./../../assets/open.svg" alt="Open timer window" class="inline" width="12">
+                        </button>
+                    </div>
                 </footer>
             </div>
         </template>
@@ -113,6 +117,7 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron';
 import TimeManager from '@lib/TimeManager';
 import Session from '@models/Session';
 import { SESSION_STATUS_DONE, SESSION_STATUS_RUNNING } from '@models/Session';
@@ -129,17 +134,12 @@ export default {
     },
 
     async mounted () {
+        this.listenToEvents();
         await this.fetchSessions();
 
         if (this.$route.params.start === true && ! this.hasRunningSession) {
             this.create();
         }
-
-        EventManager.listen('sessions.changed', async () => {
-            console.log('Sessions updated via API, re-fetching to make sure the app is up-to-date');
-
-            await this.fetchSessions();
-        });
     },
 
     beforeDestroy () {
@@ -157,12 +157,37 @@ export default {
     },
 
     methods: {
+        listenToEvents () {
+            EventManager.listen('sessions.changed', async () => {
+            console.log('Sessions updated via API, re-fetching to make sure the app is up-to-date');
+
+            await this.fetchSessions();
+        });
+
+            ipcRenderer.on('sessions:changed', async (event, args) => {
+                await this.fetchSessions();
+
+                if (args.session_uuid) {
+                    this.openSessionEdit(args.session_uuid);
+                }
+            });
+        },
+
+        openSessionEdit (session_uuid) {
+            let session = this.sessions.find(session => session.uuid === session_uuid);
+
+            if (session) {
+                this.onSessionEdit(this.sessions.indexOf(session));
+            }
+        },
+
         async create () {
             let session = await Session.create({
                 project_uuid: this.$route.params.projectUuid,
             });
 
             this.sessions.push(session);
+            ipcRenderer.send('sessions:added', {});
         },
 
         async fetchSessions () {
@@ -221,6 +246,10 @@ export default {
 
             this.onSessionEdit(index);
         },
+
+        openTimer () {
+            ipcRenderer.send('timer-window:open', {});
+        },
     },
 
     computed: {
@@ -240,7 +269,7 @@ export default {
             }, 0);
 
             return TimeManager.toFormattedTimeWithoutSeconds(totalTime);
-        }
+        },
     }
 }
 </script>

@@ -20,8 +20,9 @@
                 </div>
             </div>
 
-            <footer class="px-6 py-2 bg-gray-800 text-white">
+            <footer class="px-6 py-2 bg-gray-800 text-white flex justify-between">
                 <button type="button" @click="create" title="Add new client">+</button>
+                <button type="button" @click="openTimer" title="Open timer" class="text-sm">Open timer</button>
             </footer>
         </div>
     </Layout>
@@ -30,6 +31,7 @@
 <script>
 import Layout from './../Layout';
 import ClientRow from './../ClientRow'
+import { ipcRenderer } from 'electron';
 import ClientModel from './../../lib/models/Client'
 
 export default {
@@ -66,7 +68,11 @@ export default {
                 this.clients[index].uuid,
                 { name: name }
             );
-        }
+        },
+
+        openTimer () {
+            ipcRenderer.send('timer-window:open', {});
+        },
     }
 }
 </script>

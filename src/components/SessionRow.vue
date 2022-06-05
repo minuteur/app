@@ -50,8 +50,6 @@ export default {
 
     methods: {
         openContextMenu () {
-            console.log('opening context menu');
-
             const menu = new Menu();
             menu.append(new MenuItem({
                 label: 'Edit',

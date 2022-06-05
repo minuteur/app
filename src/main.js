@@ -5,6 +5,7 @@ import Home from '@pages/Home'
 import VueRouter from 'vue-router'
 import Projects from '@pages/Projects'
 import Sessions from '@pages/Sessions'
+import CurrentTimer from '@pages/CurrentTimer'
 import DatabaseManager from './lib/DatabaseManager'
 
 const Storage = require('electron-store');
@@ -22,9 +23,10 @@ window.mainStorage = new Storage({
 
 Vue.use(VueRouter)
 Vue.config.productionTip = false
-
+console.log(window.location);
 const routes = [
     { name: 'home', path: '/', component: Home },
+    { name: 'current', path: '/current', component: CurrentTimer },
     { name: 'client.projects', path: '/clients/:uuid/projects', component: Projects },
     { name: 'client.projects.sessions', path: '/clients/:uuid/projects/:projectUuid/sessions', component: Sessions },
 ]

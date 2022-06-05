@@ -73,6 +73,52 @@ app.on('ready', async () => {
         // icon: join(__static, isDevelopment ? 'IconTemplate-Dev.png' : 'IconTemplate.png'),
     });
 
+    let win;
+    function createTimerWindow () {
+        win = new BrowserWindow({
+            alwaysOnTop: true,
+            width: 350,
+            height: 100,
+            minWidth: 300,
+            minHeight: 100,
+            autoHideMenuBar: true,
+            show: false,
+            titleBarStyle: 'default',
+            webPreferences: {
+                nodeIntegration: true,
+            },
+        });
+
+        win.once('ready-to-show', () => {
+            win.show();
+        })
+
+        if (process.env.WEBPACK_DEV_SERVER_URL) {
+            win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/current`);
+        } else {
+            win.loadFile('app://./index.html#/current');
+        }
+    }
+
+    createTimerWindow();
+
+    ipcMain.on('sessions:added', (event, args) => {
+        win.webContents.send('sessions:added', args);
+    });
+
+    ipcMain.on('current-timer:sessions:changed', (event, args) => {
+        bar.showWindow();
+        bar.window.webContents.send('sessions:changed', args);
+    });
+
+    ipcMain.on('timer-window:open', (event, args) => {
+        if (win.isDestroyed()) {
+            createTimerWindow();
+        }
+
+        win.show();
+    });
+
     mb.on('ready', () => {
         mb.showWindow();
 

@@ -7,6 +7,13 @@ const SESSION_STATUS_RUNNING = 'running';
 const SESSION_STATUS_DONE = 'done';
 
 class Session {
+    async active () {
+        return await DatabaseManager
+            .select('*')
+            .where('state', SESSION_STATUS_RUNNING)
+            .from('sessions');
+    }
+
     async all (projectUuid) {
         return await DatabaseManager
             .select('*')
