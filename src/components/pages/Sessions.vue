@@ -34,7 +34,10 @@
                     <div class="fixed w-full h-full top-0 left-0 bg-gray-900 opacity-50 overflow-hidden" v-if="state === 'edit'"></div>
                     <div class="fixed w-full bottom-0 left-0 px-6 py-4 bg-gray-800 shadow border-t-4 border-t-gray-700" v-if="state === 'edit'">
                         <div class="mb-3">
-                            <label for="name" class="block text-sm font-medium leading-5 text-white">Session name</label>
+                            <div class="flex justify-between">
+                                <label for="name" class="block text-sm font-medium leading-5 text-white">Session name</label>
+                                <span class="text-sm font-medium leading-5 text-white">Started: {{ edit.session.started_at_time }}</span>
+                            </div>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <input
                                     id="name"
@@ -187,7 +190,7 @@ export default {
             });
 
             this.sessions.push(session);
-            ipcRenderer.send('sessions:added', {});
+            ipcRenderer.send('sessions:changed', {});
         },
 
         async fetchSessions () {
@@ -199,6 +202,7 @@ export default {
             this.edit.session.hours = TimeManager.hoursFromSeconds(this.edit.session.time);
             this.edit.session.minutes = TimeManager.minutesFromSeconds(this.edit.session.time);
             this.edit.session.seconds = TimeManager.secondsFromSeconds(this.edit.session.time);
+            this.edit.session.started_at_time = TimeManager.hoursAndMinutesFromDate(this.edit.session.started_at);
             this.state = 'edit';
 
             this.$nextTick(() => {
@@ -243,6 +247,8 @@ export default {
                 this.sessions[index].uuid,
                 totalTime
             );
+
+            ipcRenderer.send('sessions:changed', {});
 
             this.onSessionEdit(index);
         },

@@ -1,11 +1,9 @@
 <template>
     <div class="flex flex-col min-h-screen w-full">
         <div v-for="session in sessions" :key="session.uuid" class="p-4">
-            <div class="flex justify-between">
-                <div class="text-sm pt-1 text-gray-500">
-                    <span v-if="session.project">{{ session.project.name }}</span>/
-                    <span v-if="session.name">{{ session.name }}</span>
-                    <span v-else class="text-gray-300">...</span>
+            <div class="flex justify-between" :title="session.project.name">
+                <div class="text-sm pt-1 text-gray-500 truncate pr-2">
+                    <span v-if="session.project">{{ session.project.name }}</span>
                 </div>
                 <Timer
                     v-if="session.time"
@@ -15,6 +13,10 @@
                     @stop="onStopTimer(session)"
                 />
             </div>
+        </div>
+
+        <div v-if="sessions.length === 0" class="text-center text-gray-600 mt-5">
+            No active sessions
         </div>
     </div>
 </template>
@@ -49,7 +51,7 @@ export default {
 
     methods: {
         listenToEvents () {
-            ipcRenderer.on('sessions:added', () => {
+            ipcRenderer.on('sessions:changed', () => {
                 this.fetchActiveSessions();
             });
         },

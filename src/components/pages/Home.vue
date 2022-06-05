@@ -8,6 +8,7 @@
                             :client="client"
                             :odd="index % 2 === 0"
                             @client:updated="(name) => onClientUpdated(index, name)"
+                            @client:deleted="() => onClientDeleted(index)"
                         ></ClientRow>
                     </li>
                 </ul>
@@ -22,7 +23,10 @@
 
             <footer class="px-6 py-2 bg-gray-800 text-white flex justify-between">
                 <button type="button" @click="create" title="Add new client">+</button>
-                <button type="button" @click="openTimer" title="Open timer" class="text-sm">Open timer</button>
+
+                <button type="button" @click="openTimer" title="Open timer" class="text-sm text-white">
+                    <img src="./../../assets/open.svg" alt="Open timer window" class="inline" width="12">
+                </button>
             </footer>
         </div>
     </Layout>
@@ -32,11 +36,10 @@
 import Layout from './../Layout';
 import ClientRow from './../ClientRow'
 import { ipcRenderer } from 'electron';
-import ClientModel from './../../lib/models/Client'
+import ClientModel from '@models/Client'
 
 export default {
     name: 'Home',
-
     components: { Layout, ClientRow },
 
     mounted () {
@@ -68,6 +71,12 @@ export default {
                 this.clients[index].uuid,
                 { name: name }
             );
+        },
+
+        async onClientDeleted (index) {
+            await ClientModel.delete(this.clients[index].uuid);
+
+            this.clients.splice(index, 1);
         },
 
         openTimer () {

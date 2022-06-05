@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import { remote } from 'electron';
 const { Menu, MenuItem } = remote;
 
@@ -52,6 +53,10 @@ export default {
                 label: 'Edit',
                 click: () => this.edit(),
             }))
+            menu.append(new MenuItem({
+                label: 'Delete',
+                click: () => this.delete(),
+            }))
 
             menu.popup({ window: remote.getCurrentWindow() });
         },
@@ -62,6 +67,20 @@ export default {
             this.$nextTick(() => {
                 this.$refs.input.focus();
             });
+        },
+
+        delete () {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `All projects and sessions will also be removed if you delete the client ${this.client.name}`,
+                showCancelButton: true,
+                confirmButtonColor: 'red',
+                confirmButtonText: `Delete`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$emit('client:deleted');
+                }
+            })
         },
 
         save (event) {

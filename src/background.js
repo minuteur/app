@@ -77,10 +77,10 @@ app.on('ready', async () => {
     function createTimerWindow () {
         win = new BrowserWindow({
             alwaysOnTop: true,
-            width: 350,
-            height: 100,
-            minWidth: 300,
-            minHeight: 100,
+            width: 200,
+            height: 90,
+            minWidth: 100,
+            minHeight: 90,
             autoHideMenuBar: true,
             show: false,
             titleBarStyle: 'default',
@@ -102,8 +102,10 @@ app.on('ready', async () => {
 
     createTimerWindow();
 
-    ipcMain.on('sessions:added', (event, args) => {
-        win.webContents.send('sessions:added', args);
+    ipcMain.on('sessions:changed', (event, args) => {
+        if (! win.isDestroyed()) {
+            win.webContents.send('sessions:changed', args);
+        }
     });
 
     ipcMain.on('current-timer:sessions:changed', (event, args) => {

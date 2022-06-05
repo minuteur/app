@@ -74,6 +74,10 @@ class TimeManager {
         }
         return Math.round(seconds / min) * min;
     }
+
+    hoursAndMinutesFromDate (date) {
+        return moment(date).format('H:mm');
+    }
 }
 
 export default new TimeManager

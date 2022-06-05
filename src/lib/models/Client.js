@@ -20,6 +20,27 @@ class Client {
             .where('uuid', uuid)
             .update(fields);
     }
+
+    async delete (uuid) {
+        const projects = await DatabaseManager
+            .select('projects.*')
+            .where('client_uuid', uuid)
+            .from('projects');
+
+        projects.forEach(async project => {
+            await DatabaseManager.getInstance('sessions')
+                .where('project_uuid', project.uuid)
+                .delete();
+        });
+
+        await DatabaseManager.getInstance('projects')
+            .where('client_uuid', uuid)
+            .delete();
+
+        await DatabaseManager.getInstance('clients')
+            .where('uuid', uuid)
+            .delete();
+    }
 }
 
 export default new Client
