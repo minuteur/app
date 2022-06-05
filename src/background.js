@@ -86,17 +86,27 @@ app.on('ready', async () => {
             titleBarStyle: 'default',
             webPreferences: {
                 nodeIntegration: true,
+                webSecurity: false,
             },
         });
 
         win.once('ready-to-show', () => {
             win.show();
+
+            if (! win.isDestroyed()) {
+                setTimeout(() => {
+                    win.webContents.send('current-timer:loaded');
+                }, 1000);
+            }
         })
 
         if (process.env.WEBPACK_DEV_SERVER_URL) {
-            win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/current`);
+            win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}`);
         } else {
-            win.loadFile('app://./index.html#/current');
+            // win.loadFile('app://./index.html');
+            win.loadURL(`app://./index.html`);
+            // win.loadURL('file://./index.html#/current');
+
         }
     }
 

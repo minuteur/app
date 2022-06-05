@@ -4,6 +4,7 @@ import App from './App.vue'
 import Home from '@pages/Home'
 import VueRouter from 'vue-router'
 import Projects from '@pages/Projects'
+import { ipcRenderer } from 'electron';
 import Sessions from '@pages/Sessions'
 import CurrentTimer from '@pages/CurrentTimer'
 import DatabaseManager from './lib/DatabaseManager'
@@ -54,4 +55,8 @@ DatabaseManager.migrate().then(() => {
     api.listen(port, () => {
         console.log(`Example app listening at http://localhost:${port}`);
     });
+});
+
+ipcRenderer.on('current-timer:loaded', () => {
+    router.push({name: 'current'});
 });

@@ -145,7 +145,6 @@ export default {
         },
 
         goToSession (extraParams = {}) {
-            // this.$router.push(`/clients/${this.$route.params.uuid}/projects/${this.project.uuid}/sessions`);
             this.$router.push({
                 name: 'client.projects.sessions',
                 params: {
