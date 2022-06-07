@@ -101,12 +101,9 @@ app.on('ready', async () => {
         })
 
         if (process.env.WEBPACK_DEV_SERVER_URL) {
-            win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}`);
+            win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}#/current`);
         } else {
-            // win.loadFile('app://./index.html');
-            win.loadURL(`app://./index.html`);
-            // win.loadURL('file://./index.html#/current');
-
+            win.loadURL(`app://./index.html#/current`);
         }
     }
 

@@ -24,7 +24,7 @@ window.mainStorage = new Storage({
 
 Vue.use(VueRouter)
 Vue.config.productionTip = false
-console.log(window.location);
+
 const routes = [
     { name: 'home', path: '/', component: Home },
     { name: 'current', path: '/current', component: CurrentTimer },
@@ -52,9 +52,11 @@ DatabaseManager.migrate().then(() => {
      */
     const port = 22507;
 
-    api.listen(port, () => {
-        console.log(`Example app listening at http://localhost:${port}`);
-    });
+    if (! (window.location.hash && window.location.hash.includes('current'))) {
+        api.listen(port, () => {
+            console.log(`Example app listening at http://localhost:${port}`);
+        });
+    }
 });
 
 ipcRenderer.on('current-timer:loaded', () => {
